@@ -3,6 +3,11 @@ import json
 import random
 import csv
 
+
+url = "https://data.makeros.com/api/v1/projects"
+provider_id = "Kx0npmsi8l8jUf7rl7dNlLLJthNS7PNbKSh5M0coSmPZKNiDxIFpPLswVSZVhQJZ"
+key = "aGTpc6ExIlXU7lib91Wq9KaZlu4JHlr3DEVdq82NMML78Bpw7xVHaLzzvVXwu9GW"
+
 #NOTE These functions all take in a dictionary, make sure in your api calls
 # file you have a dictionary that is used to hold all project information
 
@@ -68,6 +73,11 @@ def titleTags(dictionary, tags):
             print("Found")
             fullTag = title[match: len(title)]
             isIn = 0
+            #added this to test - Danny
+            sendString = "Project: "+dictionary[project]['title']+" Description: "+dictionary[project]['description']
+            #print(sendString)
+            #Now we return the string so we can use in our bot
+            return sendString
 
             # Checks if tag exists and adds if it doesn't
             for i in tags:
@@ -101,3 +111,5 @@ def tagDescription(dictionary, tags):
             else:
                 # This can be ommited later, just make sure to remove entire else statement for no errors
                 print("No tag found.")
+
+#titleTags(data,staff);
