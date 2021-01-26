@@ -9,7 +9,7 @@ import time
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
-int statcounter=0;
+int statcounter=0
 
 def main():
     
@@ -25,6 +25,12 @@ def main():
     while True:
         logger.info("Waiting...")
         time.sleep(60)
+        tempString = titleTags(testdict,tags)
+        if(tempString!=statusString):
+            logger.info("Status change incoming...\n")
+            api.update_status(tempString)
+            statusString = tempString
+            tempString = "temp"
 
 if __name__ == "__main__":
     main()
