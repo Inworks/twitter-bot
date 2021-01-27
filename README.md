@@ -26,7 +26,7 @@ After dependencies are installed, run this command in the working directory of y
 ```
 $python3 -m venv (name of vm)
 $source ./(name of vm)/bin/activate
-$pip install tweepy requests json
+$pip install tweepy requests json os logging
 ```
 
 The steps above are required in order to avoid installing the tweepy dependencies on our entire machine (i.e. they are installed in project directory only).
