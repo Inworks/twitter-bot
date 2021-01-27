@@ -1,7 +1,5 @@
 import requests
 import json
-import random
-import csv
 
 
 url = "https://data.makeros.com/api/v1/projects"
