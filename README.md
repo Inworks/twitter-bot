@@ -1,5 +1,5 @@
 # Inworks Twitter Bot
-
+![Inworks Bot aka Joe](./Inworksbot.png)
 This repo contains the Python source code for the Inworks Twitter Bot. The Bot is designed to output selected data from our [**remote prototyping platform's API**](https://inworks.makeros.com) into [**Twitter's API**](https://developer.twitter.com/en/docs) to give insight into the featured prototyping and design projects Inworks staff is working on.
 
 ## Skill-building
@@ -26,7 +26,7 @@ The steps above are required in order to avoid installing the tweepy dependencie
 
 Below is how to configure the `config.py` file, which allows one to enter their personalized Twitter API tokens. For more information on these tokens [**click here**](https://developer.twitter.com/ja/docs/basics/authentication/guides/access-tokens).
 
-Run the following in the working directory once you've enabled the vm *(virtual env?)* above. Enter your own keys found on your Twitter Dev portal instead of `(credentials)`. 
+Run the following in the working directory once you've enabled the vm *(virtual env?)* above. Enter your own keys found on your Twitter Dev portal instead of `(credentials)`.
 ```
 $export CONSUMER_KEY="(credentials)"
 $export CONSUMER_SECRET="(credentials)"
