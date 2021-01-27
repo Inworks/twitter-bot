@@ -114,6 +114,8 @@ def tagDescription(dictionary, tags):
 
 # Returns a string of the featured project in the same format as the tag tweets
 def featuredProject(dictionary):
+    # added project import to populate the dict properly
+    projectImport(dictionary)
     for project in dictionary:
         title = dictionary[project]['title']
         match = title.find('[featured]')
