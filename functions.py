@@ -111,3 +111,33 @@ def tagDescription(dictionary, tags):
                 print("No tag found.")
 
 #titleTags(data,staff);
+
+# Returns a string of the featured project in the same format as the tag tweets
+def featuredProject(dictionary):
+    for project in dictionary:
+        title = dictionary[project]['title']
+        match = title.find('[featured]')
+
+        # Match found
+        if match != -1:
+            print("Featured project exists")
+            title = title[0:-10]
+            description = dictionary[project]['description']
+
+            # Formatted a tweet
+            tweetString = "Featured Project: " + (title)+ "\nDescription: " + description
+
+
+            # Checks length of tweet and shortens it if necessary, can add this to other statements
+            if (len(tweetString)) > 280:
+                tweetString = tweetString[0:276] + "..."
+
+            #for testing
+            print(len(tweetString))
+            print(tweetString)
+
+            #Saw Danny added return so assumed that's what standard should be for functions that retrieve info from projects for tweets
+            return tweetString
+
+    #Will only execute if no match is found
+    print("No featured project found. Please assign the \"featured\" tag to a project and run the program again")
