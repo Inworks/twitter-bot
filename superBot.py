@@ -29,9 +29,9 @@ def check_mentions(api, keywords, since_id):
             #    tweet.user.follow()
             #This is how we reply to the mention
             api.update_status(
-                status="Please reach us via DM or visit us at https://linktr.ee/inworks/",
-                in_reply_to_status_id=tweet.id, #specifically here is the response as a comment
-            )
+                status="Please reach us via DM or visit us at https://linktr.ee/inworks/",in_reply_to_status_id=tweet.id)
+# This is supposed to reply to a tweet as a comment when someone @ the bot
+# at the moment this only works if someone Tweets, if someone comments on our tweets the bot tweets out the response, working on a fix
     return new_since_id
 
 def main():
