@@ -9,7 +9,7 @@ import time
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
-int statcounter=0
+statcounter=0
 
 def main():
     
