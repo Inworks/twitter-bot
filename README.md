@@ -1,5 +1,6 @@
 # Inworks Twitter Bot
 ![Inworks Bot aka Joe](./Inworksbot.png)
+
 This repo contains the Python source code for the Inworks Twitter Bot. The Bot is designed to output selected data from our [**remote prototyping platform's API**](https://inworks.makeros.com) into [**Twitter's API**](https://developer.twitter.com/en/docs) to give insight into the featured prototyping and design projects Inworks staff is working on.
 
 ## Skill-building
