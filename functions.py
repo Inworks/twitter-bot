@@ -135,7 +135,7 @@ def featuredProject(dictionary):
                 tweetString = tweetString[0:276] + "..."
 
             #for testing
-            print(len(tweetString))
+            #print(len(tweetString))
             print(tweetString)
 
             #Saw Danny added return so assumed that's what standard should be for functions that retrieve info from projects for tweets

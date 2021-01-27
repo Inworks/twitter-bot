@@ -29,7 +29,9 @@ def check_mentions(api, keywords, since_id):
             #    tweet.user.follow()
             #This is how we reply to the mention
             api.update_status(
-                status="Please reach us via DM or visit us at https://linktr.ee/inworks/",in_reply_to_status_id=tweet.id)
+                status="Please reach us via DM or visit us at https://linktr.ee/inworks/",
+                in_reply_to_status_id=tweet.id,
+            )
 # This is supposed to reply to a tweet as a comment when someone @ the bot
 # at the moment this only works if someone Tweets, if someone comments on our tweets the bot tweets out the response, working on a fix
     return new_since_id
@@ -52,23 +54,25 @@ def main():
     while True:
         since_id = check_mentions(api, ["help", "support"], since_id)
         logger.info("Waiting...")
-        time.sleep(10)
+        time.sleep(80)
         logger.info("running functions.py\n")
         # Here are the variables needed for functions.py
         # We can condense this into its own function later
         testdict = {}
-        tags = []
-        projectImport(testdict)
-        statusString = titleTags(testdict,tags)
+        #tags = []
+        #projectImport(testdict)
+        #statusString = titleTags(testdict,tags)
+        statusString = featuredProject(testdict)
        
         #test
-        print(tempString)  
+        print(statusString)  
         
         # This can also be condensed into a function above
         if(tempString!=statusString): # Checks for change in makeros
             logger.info("Status change incoming...\n")
-            api.update_status(statusString)
-            tempString = statusString
+            if(statusString!=None):
+                api.update_status(statusString)
+                tempString = statusString
         else:
             logger.info("No Changes...\n")
 
