@@ -10,6 +10,14 @@ This code utilizes a couple of novel concepts that are useful in a programmer's 
 - Practical application of using a dictionary data structure.
 - Industry standard practice for hiding sensitive data (e.g. API keys).
 
+## Getting Started
+**NOTE: This README assumes the user is using a Unix-based Terminal to issue commands to the operating system.**
+1. Check that git is installed on your machine with `git --version`.
+2. Clone this repository onto your computer with `git clone https://github.com/Inworks/twitter-bot.git`
+3. Check that Python 3 is installed with `python3 --version`.
+
+If an error message is returned as a result of those commands, then please Google how to install git or Python 3 on your computer.
+
 ## Dependencies
 This project needs a couple of dependencies in order to run.
 It requires **Python 3** *(exact version number?)*, the Python package manager **pip** and the Python virtual environment **venv**. Documentation for installing and configuring pip and env can be [**found here**](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
@@ -18,7 +26,7 @@ After dependencies are installed, run this command in the working directory of y
 ```
 $python3 -m venv (name of vm)
 $source ./(name of vm)/bin/activate
-$pip install tweepy
+$pip install tweepy requests json
 ```
 
 The steps above are required in order to avoid installing the tweepy dependencies on our entire machine (i.e. they are installed in project directory only).
