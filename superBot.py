@@ -69,11 +69,17 @@ def main():
         print(statusString)
         print(prog)  
         
-        # This new compare checks for a change in progress
-        if(prog!=tempp):
+        # We should condense this into a function possibly
+        if(prog!=tempp):#This checks for a change in the featured project progress bar
             logger.info("Change in progress!!!\n")
             api.update_status("Project "+title+" progress increased to "+str(prog)+" POGGERS!")
             tempp = prog
+            statusString=featuredProject(testdict)
+            tempString = statusString
+        elif(statusString!=tempString):#This checks for a change in description of the featured project
+            logger.info("Change in description!!!\n")
+            api.update_status(statusString)
+            tempString = statusString
         # This can also be condensed into a function above
         """ old compare
         if(tempString!=statusString): # Checks for change in makeros
