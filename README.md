@@ -3,6 +3,20 @@
 
 This repo contains the Python source code for the Inworks Twitter Bot. The Bot is designed to output selected data from our [**remote prototyping platform's API**](https://inworks.makeros.com) into [**Twitter's API**](https://developer.twitter.com/en/docs) to give insight into the featured prototyping and design projects Inworks staff is working on.
 
+## Curent State
+TWEET CHANGE
+- The bot currently works by pulling the "featured" project description and comparing it to a stored string.
+- If the strings do not match this means there is a change in the description and we post it as a status.
+- The goal is to make this change based on "progress" instead of description changes
+
+
+AUTO REPLY
+- The auto reply feature works currently if someone Tweets regulary while mentioning @Inworks_Joe along with a few keywords.
+- Keywords: Hey, hi, hello, joe, yo, sup, whats, support, help. I believe the goal will be to make it reply on any mention period.
+BUGS
+- at the moment the bot sometimes does not reply in a comment but as a status change(Tweet).
+
+
 ## Skill-building
 This code utilizes a couple of novel concepts that are useful in a programmer's toolkit, namely:
 - Using one service's API for data output into another service's API for data input.
