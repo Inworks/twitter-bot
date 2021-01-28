@@ -42,19 +42,18 @@ def main():
     # We can condense this into its own function later
     statusString = "filler text"
     tempString = "temp"
+    prog = 0
+    tempp = 0 # This holds a copy of the progress to compare later
+    title = "blahh"
     #statusString = titleTags(testdict,tags)
-   
-    #testing the strings
-    print(statusString)
-    print(tempString)
      
     api = create_api()
-    api.update_status("superBot Test is up and running :D")
+    #api.update_status("superBot Test is up and running :D")
     since_id = 1
     while True:
-        since_id = check_mentions(api, ["help", "support"], since_id)
+        #since_id = check_mentions(api, ["what","up","joe","hello","hey","hi","yo","help", "support"], since_id) #disabled for now
         logger.info("Waiting...")
-        time.sleep(80)
+        time.sleep(20) #This is our delay in seconds
         logger.info("running functions.py\n")
         # Here are the variables needed for functions.py
         # We can condense this into its own function later
@@ -62,12 +61,21 @@ def main():
         #tags = []
         #projectImport(testdict)
         #statusString = titleTags(testdict,tags)
-        statusString = featuredProject(testdict)
-       
+        statusString = featuredProject(testdict) #This var holds the description string
+        title = projectTitle(testdict) #This var holds matching project title as a string
+        prog = projectProg(testdict) #This var holds the progress percentage as an int
+ 
         #test
-        print(statusString)  
+        print(statusString)
+        print(prog)  
         
+        # This new compare checks for a change in progress
+        if(prog!=tempp):
+            logger.info("Change in progress!!!\n")
+            api.update_status("Project "+title+" progress increased to "+str(prog)+" POGGERS!")
+            tempp = prog
         # This can also be condensed into a function above
+        """ old compare
         if(tempString!=statusString): # Checks for change in makeros
             logger.info("Status change incoming...\n")
             if(statusString!=None):
@@ -75,6 +83,7 @@ def main():
                 tempString = statusString
         else:
             logger.info("No Changes...\n")
+        """
 
 if __name__ == "__main__":
     main()
