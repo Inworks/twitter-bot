@@ -143,3 +143,40 @@ def featuredProject(dictionary):
 
     #Will only execute if no match is found
     print("No featured project found. Please assign the \"featured\" tag to a project and run the program again")
+
+# Returns an integer of the featured project current progress 0-100
+def projectProg(dictionary):
+    # added project import to populate the dict properly
+    projectImport(dictionary)
+    for project in dictionary:
+        title = dictionary[project]['title']
+        match = title.find('[featured]')
+        prog = dictionary[project]['progress']
+
+        # Match found
+        if match != -1:
+            print("Featured project exists")
+            title = title[0:-10]
+            description = dictionary[project]['description']
+
+
+            # returns the progress percentage as an integer
+            return prog
+
+# This function returns the 'Title' of the matching project
+def projectTitle(dictionary):
+    # added project import to populate the dict properly
+    projectImport(dictionary)
+    for project in dictionary:
+        title = dictionary[project]['title']
+        match = title.find('[featured]')
+
+        # Match found
+        if match != -1:
+            print("Featured project exists")
+            title = title[0:-10]
+            description = dictionary[project]['description']
+
+
+            # returns the title as an string
+            return title
