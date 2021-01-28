@@ -127,12 +127,12 @@ def featuredProject(dictionary):
             description = dictionary[project]['description']
 
             # Formatted a tweet
-            tweetString = "Featured Project: " + (title)+ "\nDescription: " + description
+            tweetString = "Featured Project-" + (title)+ ": " + description
 
 
             # Checks length of tweet and shortens it if necessary, can add this to other statements
-            if (len(tweetString)) > 280:
-                tweetString = tweetString[0:276] + "..."
+            if (len(tweetString)) > 250:
+                tweetString = tweetString[0:230] + "..."
 
             #for testing
             #print(len(tweetString))
