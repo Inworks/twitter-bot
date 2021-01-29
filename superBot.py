@@ -9,8 +9,6 @@ import time
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
-statcounter=0
-
 
 # This is the mentions bot from tweepy ment to work with our status change
 def check_mentions(api, keywords, since_id):
@@ -36,15 +34,19 @@ def check_mentions(api, keywords, since_id):
 # at the moment this only works if someone Tweets, if someone comments on our tweets the bot tweets out the response, working on a fix
     return new_since_id
 
+# Here is an attempt at making the status change a function
+#def statusChange(string):
+
 def main():
     
     # Here are the variables needed for functions.py
     # We can condense this into its own function later
     statusString = "filler text"
     tempString = "temp"
-    prog = 0
+    prog = 0 # stores progress of featured project
     tempp = 0 # This holds a copy of the progress to compare later
     title = "blahh"
+    prevStatus=[] # stores previous status tweets
     #statusString = titleTags(testdict,tags)
      
     api = create_api()
@@ -70,26 +72,30 @@ def main():
         print(prog)  
         
         # We should condense this into a function possibly
+        # Adding array of previous status in order to not retweet 
         if(prog!=tempp):#This checks for a change in the featured project progress bar
             logger.info("Change in progress!!!\n")
-            api.update_status("Project "+title+" progress increased to "+str(prog)+" POGGERS!")
-            tempp = prog
-            statusString=featuredProject(testdict)
-            tempString = statusString
+            for x in prevStatus:
+                if(("Project "+title+" progress increased to "+str(prog)+"!") != x):
+                    api.update_status("Project "+title+" progress increased to "+str(prog)+"!")
+                    tempp = prog
+                    statusString=featuredProject(testdict)
+                    tempString = statusString
+                    prevStatus.append("Project "+title+" progress increased to "+str(prog)+"!")
+                 else:
+                     logger.info("Duplicate status!!!\n")
+
         elif(statusString!=tempString):#This checks for a change in description of the featured project
             logger.info("Change in description!!!\n")
-            api.update_status(statusString)
-            tempString = statusString
+            for x in prevStatus:
+                if(statusString!=x):
+                    api.update_status(statusString)
+                    tempString = statusString
+                    prevStatus.append(statusString)
+                else:
+                    logger.info("Duplicate status!!!\n")
         # This can also be condensed into a function above
-        """ old compare
-        if(tempString!=statusString): # Checks for change in makeros
-            logger.info("Status change incoming...\n")
-            if(statusString!=None):
-                api.update_status(statusString)
-                tempString = statusString
-        else:
-            logger.info("No Changes...\n")
-        """
+
 
 if __name__ == "__main__":
     main()
