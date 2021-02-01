@@ -64,3 +64,10 @@ $export ACCESS_TOKEN_SECRET="(credentials)"
 $export PROVIDER_ID="(credentials)"
 $export KEY="(credentials)"
 ```
+
+### Credentials
+```
+In the employee shared folder you can find the credentials needed for both twitter and makerOS.
+/Volumes/Inworks_Shared/Space/Downtown Lab/APIs/
+```
+
