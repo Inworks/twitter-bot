@@ -79,7 +79,7 @@ def main():
                 api.update_status(t)
                 tempp = prog
                 #statusString=featuredProject(testdict)
-                #tempString = statusString
+                tempString = statusString
                 prevStatus.append(t)
             else:
                 logger.info("Duplicate status!!!\n")
