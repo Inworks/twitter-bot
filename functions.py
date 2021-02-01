@@ -1,7 +1,5 @@
 import requests
 import json
-import random
-import csv
 
 
 url = "https://data.makeros.com/api/v1/projects"
@@ -113,3 +111,72 @@ def tagDescription(dictionary, tags):
                 print("No tag found.")
 
 #titleTags(data,staff);
+
+# Returns a string of the featured project in the same format as the tag tweets
+def featuredProject(dictionary):
+    # added project import to populate the dict properly
+    projectImport(dictionary)
+    for project in dictionary:
+        title = dictionary[project]['title']
+        match = title.find('[featured]')
+
+        # Match found
+        if match != -1:
+            print("Featured project exists")
+            title = title[0:-10]
+            description = dictionary[project]['description']
+
+            # Formatted a tweet
+            tweetString = "Featured Project-" + (title)+ ": " + description
+
+
+            # Checks length of tweet and shortens it if necessary, can add this to other statements
+            if (len(tweetString)) > 250:
+                tweetString = tweetString[0:230] + "..."
+
+            #for testing
+            #print(len(tweetString))
+            print(tweetString)
+
+            #Saw Danny added return so assumed that's what standard should be for functions that retrieve info from projects for tweets
+            return tweetString
+
+    #Will only execute if no match is found
+    print("No featured project found. Please assign the \"featured\" tag to a project and run the program again")
+
+# Returns an integer of the featured project current progress 0-100
+def projectProg(dictionary):
+    # added project import to populate the dict properly
+    projectImport(dictionary)
+    for project in dictionary:
+        title = dictionary[project]['title']
+        match = title.find('[featured]')
+        prog = dictionary[project]['progress']
+
+        # Match found
+        if match != -1:
+            print("Featured project exists")
+            title = title[0:-10]
+            description = dictionary[project]['description']
+
+
+            # returns the progress percentage as an integer
+            return prog
+
+# This function returns the 'Title' of the matching project
+def projectTitle(dictionary):
+    # added project import to populate the dict properly
+    projectImport(dictionary)
+    for project in dictionary:
+        title = dictionary[project]['title']
+        match = title.find('[featured]')
+
+        # Match found
+        if match != -1:
+            print("Featured project exists")
+            title = title[0:-10]
+            description = dictionary[project]['description']
+
+
+            # returns the title as an string
+            return title
