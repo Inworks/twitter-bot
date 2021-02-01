@@ -1,3 +1,0 @@
-url = "https://data.makeros.com/api/v1/projects"
-provider_id = "Kx0npmsi8l8jUf7rl7dNlLLJthNS7PNbKSh5M0coSmPZKNiDxIFpPLswVSZVhQJZ"
-key = "aGTpc6ExIlXU7lib91Wq9KaZlu4JHlr3DEVdq82NMML78Bpw7xVHaLzzvVXwu9GW"

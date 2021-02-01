@@ -25,12 +25,20 @@ The steps above are required in order to avoid installing the tweepy dependencie
 
 ## Configuration
 
-Below is how to configure the `config.py` file, which allows one to enter their personalized Twitter API tokens. For more information on these tokens [**click here**](https://developer.twitter.com/ja/docs/basics/authentication/guides/access-tokens).
+Below is how to configure the `config.py` and `makeros_config.py` file, which allows one to enter their personalized Twitter API tokens. For more information on these tokens [**click here**](https://developer.twitter.com/docs/basics/authentication/guides/access-tokens).
 
+
+### Twitter
 Run the following in the working directory once you've enabled the vm *(virtual env?)* above. Enter your own keys found on your Twitter Dev portal instead of `(credentials)`.
 ```
 $export CONSUMER_KEY="(credentials)"
 $export CONSUMER_SECRET="(credentials)"
 $export ACCESS_TOKEN="(credentials)"
 $export ACCESS_TOKEN_SECRET="(credentials)"
+```
+
+### MakerOS
+```
+$export PROVIDER_ID="(credentials)"
+$export KEY="(credentials)"
 ```
