@@ -180,3 +180,30 @@ def projectTitle(dictionary):
 
             # returns the title as an string
             return title
+
+#Assumes you have loaded dictionary
+def downloadFile(dictionary):
+    #if there's no dictionary here's where youd put request for project
+
+    #Goes through every file in project 1, here's where you would replace 1
+    # with the project you want the files for
+    for thing in dictionary[1]['files']:
+        print(thing)
+        #print(os.getcwd())
+        fileName = thing['name']
+        ourCwd = "{}/{}".format(os.getcwd(), "Files")
+
+        #Searches for folder called Files, makes if doesn't exist
+        if not os.path.exists(ourCwd):
+            os.mkdir(ourCwd)
+        url = thing['download_url']
+
+        #Creates file 
+        file_write = os.path.join(ourCwd,fileName)
+
+        #Writes to file
+        with requests.get(url, stream=True) as r:
+            r.raise_for_status()
+            with open(file_write, 'wb') as f:
+                for chunk in r.iter_content(chunk_size=8192):
+                    f.write(chunk)
