@@ -76,20 +76,20 @@ def main():
             t = "Project "+title+" progress increased to "+str(prog)+"!"
             #for x in prevStatus:
             if(t not in prevStatus):
-                api.update_status(t)
+                #api.update_status(t)
                 tempp = prog
                 #statusString=featuredProject(testdict)
                 tempString = statusString
                 prevStatus.append(t)
             else:
+                tempp = prog
                 logger.info("Duplicate status!!!\n")
-            print(tempp)
         elif(statusString!=tempString):#This checks for a change in description of the featured project
             logger.info("Change in description!!!\n")
             #tempString = statusString
             #for x in prevStatus:
             if(statusString not in prevStatus):
-                api.update_status(statusString)
+                #api.update_status(statusString)
                 tempString = statusString
                 prevStatus.append(statusString)
             else:
