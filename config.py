@@ -3,8 +3,12 @@ import tweepy
 import logging
 import os
 
+# Creates logger variable for terminal\logging prints
 logger = logging.getLogger()
 
+
+# Function for initiating Inworks_Joe twitter bot
+# using API credentials and access tokens
 def create_api():
     consumer_key = os.getenv("CONSUMER_KEY")
     consumer_secret = os.getenv("CONSUMER_SECRET")
@@ -18,7 +22,7 @@ def create_api():
     try:
         api.verify_credentials()
     except Exception as e:
-        logger.error("Error creating API", exc_info=True)
+        logger.error("Error creating API", exc_info=True) 
         raise e
     logger.info("API created")
     return api
