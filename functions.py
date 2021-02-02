@@ -140,7 +140,7 @@ def featuredProject(dictionary):
 
             #for testing
             #print(len(tweetString))
-            print(tweetString)
+            #print(tweetString)
 
             #Saw Danny added return so assumed that's what standard should be for functions that retrieve info from projects for tweets
             return tweetString
@@ -167,7 +167,7 @@ def projectProg(dictionary):
             # returns the progress percentage as an integer
             return prog
 
-# This function returns the 'Title' of the matching project
+# This function returns the 'Title' of the matching project as a string
 def projectTitle(dictionary):
     # added project import to populate the dict properly
     projectImport(dictionary)
