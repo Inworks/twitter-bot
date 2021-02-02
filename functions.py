@@ -1,16 +1,20 @@
 import requests
 import json
+import os
 
+provider_id = os.getenv("PROVIDER_ID")
+key = os.getenv("KEY")
 
 url = "https://data.makeros.com/api/v1/projects"
-provider_id = "Kx0npmsi8l8jUf7rl7dNlLLJthNS7PNbKSh5M0coSmPZKNiDxIFpPLswVSZVhQJZ"
-key = "aGTpc6ExIlXU7lib91Wq9KaZlu4JHlr3DEVdq82NMML78Bpw7xVHaLzzvVXwu9GW"
+#provider_id = "Kx0npmsi8l8jUf7rl7dNlLLJthNS7PNbKSh5M0coSmPZKNiDxIFpPLswVSZVhQJZ"
+#key = "aGTpc6ExIlXU7lib91Wq9KaZlu4JHlr3DEVdq82NMML78Bpw7xVHaLzzvVXwu9GW"
 
 #NOTE These functions all take in a dictionary, make sure in your api calls
 # file you have a dictionary that is used to hold all project information
 
 #Downloads general and uses projBreakdown to get specific info
 def projectImport(dictionary):
+    #createmakerAPI()
     r = requests.get(url,params={"key":key,"provider_id":provider_id})
 
     # We print the status for testing purposes
