@@ -6,12 +6,10 @@ provider_id = os.getenv("PROVIDER_ID")
 key = os.getenv("KEY")
 
 url = "https://data.makeros.com/api/v1/projects"
-#provider_id = "Kx0npmsi8l8jUf7rl7dNlLLJthNS7PNbKSh5M0coSmPZKNiDxIFpPLswVSZVhQJZ"
-#key = "aGTpc6ExIlXU7lib91Wq9KaZlu4JHlr3DEVdq82NMML78Bpw7xVHaLzzvVXwu9GW"
 
-#NOTE These functions all take in a dictionary, make sure in your api calls
+# NOTE: These functions all take in a dictionary, make sure in your api calls
 # file you have a dictionary that is used to hold all project information
-
+#
 #Downloads general and uses projBreakdown to get specific info
 def projectImport(dictionary):
     #createmakerAPI()
@@ -21,18 +19,18 @@ def projectImport(dictionary):
     # print("Status code: {}".format(r.status_code))
 
     if r.status_code == 200:
-        
+
         # Here we load the json string into a python list
-        
+
         data = json.loads(r.text)
-        count = 1        
+        count = 1
         ## This the nitty gritty that makes this dictionary usable
         for i in data['data']:
             d2 = {}
             d2.update(i)
             dictionary[count] = d2
             count+=1
-    
+
     # Call in project breakdown to get specific project info
     #projBreakdown(dictionary=dictionary)
     print("Project Load Successful\n")
@@ -44,15 +42,15 @@ def projBreakdown(dictionary):
     # remove the 3 up to the # to get all projects
     for number in range(1, 3):#len(dictionary) +1):
         print(number)
-        projURL = url + "/" 
+        projURL = url + "/"
         projURL = projURL + dictionary[number]['id']
         #print(projURL)
-        
+
         # Below part is how you get information on individual projects
         pRequest = requests.get(projURL,params={"key":key,"provider_id":provider_id})
         if pRequest.status_code ==200:
             data = json.loads(pRequest.text)
-            
+
             #This was used to make sure data came in right
             #print(type(data))
 
@@ -62,8 +60,8 @@ def projBreakdown(dictionary):
 
             dictionary[number] = d2
 
-#NOTE These functions use a list that holds tags, if you plan on using them you need a list to store tags
-
+# NOTE: These functions use a list that holds tags, if you plan on using them you need a list to store tags
+#
 # This reads the titles and checks for tags and adds them to the list if they are not already in there
 def titleTags(dictionary, tags):
     for project in dictionary:
@@ -202,7 +200,7 @@ def downloadFile(dictionary):
             os.mkdir(ourCwd)
         url = thing['download_url']
 
-        #Creates file 
+        #Creates file
         file_write = os.path.join(ourCwd,fileName)
 
         #Writes to file
