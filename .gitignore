@@ -1,2 +1,5 @@
-api-keys.txt
 twitterbot_test
+python-env
+inworks-init.sh
+__pycache__
+.DS_Store

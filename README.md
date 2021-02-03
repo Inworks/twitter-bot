@@ -1,5 +1,4 @@
 # Inworks Twitter Bot
-![Inworks Bot aka Joe](./Inworksbot.png)
 
 This repo contains the Python source code for the Inworks Twitter Bot. The Bot is designed to output selected data from our [**remote prototyping platform's API**](https://inworks.makeros.com) into [**Twitter's API**](https://developer.twitter.com/en/docs) to give insight into the featured prototyping and design projects Inworks staff is working on.
 
@@ -38,36 +37,19 @@ It requires **Python 3** *(exact version number?)*, the Python package manager *
 
 After dependencies are installed, run this command in the working directory of your bot:
 ```
-$python3 -m venv (name of vm)
-$source ./(name of vm)/bin/activate
-$pip install tweepy requests json os logging
+$ python3 -m venv python-env
+$ source ./python-env/bin/activate
+$ python3 -m pip install --upgrade pip # this ensures you're using the updated version of pip
+$ pip install tweepy requests logging
 ```
 
-The steps above are required in order to avoid installing the tweepy dependencies on our entire machine (i.e. they are installed in project directory only).
+The steps above are required in order to avoid installing Python packages on our entire machine (i.e. they are installed in project directory only).
 
 ## Configuration
 
-Below is how to configure the `config.py` and `makeros_config.py` file, which allows one to enter their personalized Twitter API tokens. For more information on these tokens [**click here**](https://developer.twitter.com/docs/basics/authentication/guides/access-tokens).
+Credentials and tokens for your own MakerOS API and Twitter API instances need to be added to the `init-credentials.sh` script and executed in your working directory by using the Terminal command `source ./init-credentials.sh`. **If you plan to work in a public GitHub repo please note that you should rename this file and add its revised name to the .gitignore file.** These credentials are stored as environment variables in the OS and then accessed by the `config.py` and `makeros_config.py` files. For more information about Twitter's access token architecture **[click here](https://developer.twitter.com/en/docs/authentication/oauth-1-0a/obtaining-user-access-tokens)**.
 
 
-### Twitter
-Run the following in the working directory once you've enabled the vm *(virtual env?)* above. Enter your own keys found on your Twitter Dev portal instead of `(credentials)`.
-```
-$export CONSUMER_KEY="(credentials)"
-$export CONSUMER_SECRET="(credentials)"
-$export ACCESS_TOKEN="(credentials)"
-$export ACCESS_TOKEN_SECRET="(credentials)"
-```
+### For Inworks Employees
 
-### MakerOS
-```
-$export PROVIDER_ID="(credentials)"
-$export KEY="(credentials)"
-```
-
-### Credentials
-```
-In the employee shared folder you can find the credentials needed for both twitter and makerOS.
-/Volumes/Inworks_Shared/Space/Downtown Lab/APIs/
-```
-
+Our script for setting environment variables can be accessed on the Inworks file server in the `/Space/Downtown Lab/APIs`.
