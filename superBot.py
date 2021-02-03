@@ -65,8 +65,8 @@ def main():
         prog = projectProg(testdict) #This var holds the progress percentage as an int
  
         #test
-        print(statusString)
-        print("Progress: "+str(prog))  
+        #print(statusString)
+        #print("Progress: "+str(prog))  
         
         # We should condense this into a function possibly
         # Adding array of previous status in order to not retweet 
@@ -95,6 +95,8 @@ def main():
             else:
                 logger.info("Duplicate status!!!\n")
         # This can also be condensed into a function above
+        else:
+            logger.info("No change\n")
 
 
 if __name__ == "__main__":
