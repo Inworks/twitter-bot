@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-from functions import *
+from makeros_functions import *
 import tweepy
 import logging
-from config import create_api #this takes the credentials exported to the venv
+from twitter_config import create_api #this takes the credentials exported to the venv
 import time
 
 logging.basicConfig(level=logging.INFO)
@@ -37,7 +37,7 @@ def check_mentions(api, keywords, since_id):
 #def statusChange(string):
 
 def main():
-    
+
     # Here are the variables needed for functions.py
     # We can condense this into its own function later
     statusString = "filler text"
@@ -47,7 +47,7 @@ def main():
     title = "blahh"
     prevStatus=[] # stores previous status tweets
     #statusString = titleTags(testdict,tags)
-     
+
     api = create_api()
     #api.update_status("superBot Test is up and running :D")
     since_id = 1
@@ -63,13 +63,13 @@ def main():
         statusString = featuredProject(testdict) #This var holds the description string
         title = projectTitle(testdict) #This var holds matching project title as a string
         prog = projectProg(testdict) #This var holds the progress percentage as an int
- 
+
         #test
         #print(statusString)
-        #print("Progress: "+str(prog))  
-        
+        #print("Progress: "+str(prog))
+
         # We should condense this into a function possibly
-        # Adding array of previous status in order to not retweet 
+        # Adding array of previous status in order to not retweet
         if(prog!=tempp):#This checks for a change in the featured project progress bar
             logger.info("Change in progress!!!\n")
             #tempp = prog
