@@ -4,7 +4,7 @@ This repo contains the Python source code for the Inworks Twitter Bot, known aff
 
 ## Current Functionality
 
-These are the current stable features of Joe (`twitter-bot.py`).
+These are the current stable features of Joe (`twitter_bot.py`).
 
 #### TWEET CHANGE
 - The bot currently works by pulling the "featured" project description and comparing it to a stored string.
@@ -48,7 +48,7 @@ The steps above are required in order to avoid installing Python packages on our
 
 ## Configuration
 
-Credentials and tokens for your own MakerOS API and Twitter API instances need to be added to the `init-credentials.sh` script and executed in your working directory by using the Terminal command `source ./init-credentials.sh`. **If you plan to work in a public GitHub repo please note that you should rename this file and add its revised name to the .gitignore file.** These credentials are stored as environment variables in the OS and then accessed by the `twitter-config.py` and `makeros-functions.py` files. For more information about Twitter's access token architecture **[click here](https://developer.twitter.com/en/docs/authentication/oauth-1-0a/obtaining-user-access-tokens)**.
+Credentials and tokens for your own MakerOS API and Twitter API instances need to be added to the `init-credentials.sh` script and executed in your working directory by using the Terminal command `source ./init-credentials.sh`. **If you plan to work in a public GitHub repo please note that you should rename this file and add its revised name to the .gitignore file.** These credentials are stored as environment variables in the OS and then accessed by the `twitter_config.py` and `makeros_functions.py` files. For more information about Twitter's access token architecture **[click here](https://developer.twitter.com/en/docs/authentication/oauth-1-0a/obtaining-user-access-tokens)**.
 
 
 ### For Inworks Employees
