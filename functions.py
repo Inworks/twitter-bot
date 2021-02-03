@@ -34,7 +34,7 @@ def projectImport(dictionary):
             count+=1
     
     # Call in project breakdown to get specific project info
-    projBreakdown(dictionary=dictionary)
+    #projBreakdown(dictionary=dictionary)
     print("Project Load Successful\n")
 
 #This function goes into project import to get more specific project info
@@ -159,7 +159,7 @@ def projectProg(dictionary):
 
         # Match found
         if match != -1:
-            print("Featured project exists")
+            #print("Featured project exists")
             title = title[0:-10]
             description = dictionary[project]['description']
 
@@ -177,7 +177,7 @@ def projectTitle(dictionary):
 
         # Match found
         if match != -1:
-            print("Featured project exists")
+            #print("Featured project exists")
             title = title[0:-10]
             description = dictionary[project]['description']
 
