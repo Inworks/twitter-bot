@@ -1,6 +1,8 @@
 import requests
 import json
 import os
+from datetime import datetime
+from datetime import timedelta
 
 provider_id = os.getenv("PROVIDER_ID")
 key = os.getenv("KEY")
@@ -209,3 +211,42 @@ def downloadFile(dictionary):
             with open(file_write, 'wb') as f:
                 for chunk in r.iter_content(chunk_size=8192):
                     f.write(chunk)
+
+#Returns string of duration of featured project (from create date to update date)
+def projectDuration(dictionary):
+    projectImport(dictionary)
+    for project in dictionary:
+        title = dictionary[project]['title']
+        match = title.find('[featured]')
+
+        # Match found
+        if match != -1:
+            #print(project)
+            #print(allProj[project]["created_at"])
+            #print(allProj[project]["updated_at"])
+
+            #Converts the created_at and updated_at date strings into datetime objects we can manipulate
+            date1 = datetime.strptime(dictionary[project]["created_at"], '%Y-%m-%d %H:%M:%S')
+            date2 = datetime.strptime(dictionary[project]["updated_at"], '%Y-%m-%d %H:%M:%S')
+
+            #Find the time difference between the two dates
+            totalTime = date2 - date1
+
+            #totalTime is a timedelta object that outputs number of days and then remaining number of hours, minutes and seconds in HH:MM:SS Format
+            #Number of days is accessed through timedeltaobject.days
+            #The remaining total of the  hours, minutes and seconds is accessed through timedeltaobject.seconds, all converted into seconds
+            #timedeltaobject.seconds DOES NOT INCLUDE THE NUMBER OF DAYS
+            #We want the total time to be outputted in number of days and hours
+            #The following will make the output look better for the user
+
+            #60 seconds in a minute, 60 minutes in an hour, rounding down to the nearest hour
+            numberOfHours = int(totalTime.seconds / (60 * 60))
+
+            #print(totalTime.days, " days and ", numberOfHours, " hours")
+
+            durationString = "This project has been active for a total of " + totalTime.days + "days and " + numberOfHours + " hours"
+
+            #print(totalTime)
+
+            #returns project duration as string
+            return durationString
