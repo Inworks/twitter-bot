@@ -15,7 +15,8 @@ def main():
     media = api.media_upload("./LaptopStand.jpg") #Add image path here
 
     # Post tweet with image
-    tweet = "Here is a progress picture of our current laptop stand for the Basalt Police Department! #inworks" #Add image description here
+    # will add Asia's function here and place resulting string in tweet.
+    tweet = "It took us <Asia's func> to get our first prototype!  #inworks" #Add image description here
     post_result = api.update_status(status=tweet, media_ids=[media.media_id])
 
 if __name__ == "__main__":
