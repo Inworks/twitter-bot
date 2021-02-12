@@ -9,6 +9,7 @@ import time
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
+#Test commit - danny
 # This is the mentions bot from tweepy ment to work with our status change
 def check_mentions(api, keywords, since_id):
     logger.info("Retrieving mentions")
