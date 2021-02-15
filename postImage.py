@@ -17,10 +17,18 @@ def main():
     # Upload image
     media = api.media_upload("./LaptopStand.jpg") #Add image path here
 
-    # Post tweet with image and duration
-    durationString = projectDuration(dict)
-    tweet = "It took us " + durationString + " to get our first prototype!  #inworks" #Add image description here
-    post_result = api.update_status(status=tweet, media_ids=[media.media_id])
+    # Post tweet with image, duration, title and progress
+    featuredDuration = projectDuration(dict)
+    featuredTitle = projectTitle(dict)
+    featuredProgress = projectProg(dict)
+    tweet = featuredDuration + " until we got the first prototype made for the " + featuredTitle + " project. We're currently " + str(featuredProgress) + "% completed! \U0001F389  #inworks" #Add image description here
+    prompt = input("The following will be tweeted: " + tweet + " Would you like to proceed? (y/n)")
+    if prompt == 'y':
+        post_result = api.update_status(status=tweet, media_ids=[media.media_id])
+    elif prompt == 'n':
+        print("User declined")
+    else:
+        print("Invalid response. Will no proceed to tweet")
 
 if __name__ == "__main__":
 
