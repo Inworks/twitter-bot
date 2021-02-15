@@ -244,7 +244,20 @@ def projectDuration(dictionary):
 
             #print(totalTime.days, " days and ", numberOfHours, " hours")
 
-            durationString = "This project has been active for a total of " + totalTime.days + "days and " + numberOfHours + " hours"
+            #A tad more work just to avoid doing "day(s)" and "hour(s)"
+            if totalTime.days == 1:
+                if numberOfHours == 1:
+                    durationString = str(totalTime.days) + " day and " + str(numberOfHours) + " hour"
+
+                else:
+                    durationString = str(totalTime.days) + " day and " + str(numberOfHours) + " hours"
+            else:
+                if numberOfHours == 1:
+                    durationString = str(totalTime.days) + " days and " + str(numberOfHours) + " hour"
+
+                else:
+                    durationString = str(totalTime.days) + " days and " + str(numberOfHours) + " hours"
+
 
             #print(totalTime)
 
