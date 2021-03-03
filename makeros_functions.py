@@ -1,8 +1,8 @@
 import requests
 import json
 import os
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
+import numpy as np
 
 provider_id = os.getenv("PROVIDER_ID")
 key = os.getenv("KEY")
@@ -34,7 +34,7 @@ def projectImport(dictionary):
             count+=1
 
     # Call in project breakdown to get specific project info
-    #projBreakdown(dictionary=dictionary)
+    projBreakdown(dictionary=dictionary)
     print("Project Load Successful\n")
 
 #This function goes into project import to get more specific project info
@@ -42,7 +42,7 @@ def projBreakdown(dictionary):
 
     # This controls which projects specific information will get brought in
     # remove the 3 up to the # to get all projects
-    for number in range(1, 3):#len(dictionary) +1):
+    for number in range(1, len(dictionary)+1):#len(dictionary) +1):
         print(number)
         projURL = url + "/"
         projURL = projURL + dictionary[number]['id']
@@ -119,7 +119,7 @@ def tagDescription(dictionary, tags):
 # Returns a string of the featured project in the same format as the tag tweets
 def featuredProject(dictionary):
     # added project import to populate the dict properly
-    projectImport(dictionary)
+    #projectImport(dictionary)
     for project in dictionary:
         title = dictionary[project]['title']
         match = title.find('[featured]')
@@ -151,7 +151,7 @@ def featuredProject(dictionary):
 # Returns an integer of the featured project current progress 0-100
 def projectProg(dictionary):
     # added project import to populate the dict properly
-    projectImport(dictionary)
+    #projectImport(dictionary)
     for project in dictionary:
         title = dictionary[project]['title']
         match = title.find('[featured]')
@@ -170,7 +170,7 @@ def projectProg(dictionary):
 # This function returns the 'Title' of the matching project as a string
 def projectTitle(dictionary):
     # added project import to populate the dict properly
-    projectImport(dictionary)
+    #projectImport(dictionary)
     for project in dictionary:
         title = dictionary[project]['title']
         match = title.find('[featured]')
@@ -212,54 +212,65 @@ def downloadFile(dictionary):
                 for chunk in r.iter_content(chunk_size=8192):
                     f.write(chunk)
 
-#Returns string of duration of featured project (from create date to update date)
-def projectDuration(dictionary):
-    projectImport(dictionary)
+#Returns duration of project in number of business days (from create date to update date)
+def projectDuration(project):
+    #Converts the created_at and updated_at date strings into datetime objects we can manipulate
+    date1 = datetime.strptime(project["created_at"], '%Y-%m-%d %H:%M:%S')
+    date2 = datetime.strptime(project["updated_at"], '%Y-%m-%d %H:%M:%S')
+
+    #We only need the date and not the time to calculate business days
+    date1Test = date1.date()
+    date2Test = date2.date()
+
+    busDays = np.busday_count(date1Test, date2Test)
+
+    #print(busDays)
+
+    #Returns busDays as an int object
+    return busDays
+
+#Returns the list of statuses for the featured project
+def projectStatus(dictionary):
+    #projectImport(dictionary)
+    for project in dictionary:
+        #print(dictionary[project]['statuses'])
+        title = dictionary[project]['title']
+        match = title.find('[featured]')
+
+        #Match found
+        if match != -1:
+            #print(project)
+            #print(dictionary[project]['statuses'])
+            return dictionary[project]['statuses']
+
+#Return a list of all projects with the featured tag
+def featuredProjectList(dictionary):
+    # added project import to populate the dict properly
+    #projectImport(dictionary)
+    featuredList = []
     for project in dictionary:
         title = dictionary[project]['title']
         match = title.find('[featured]')
 
         # Match found
         if match != -1:
-            #print(project)
-            #print(allProj[project]["created_at"])
-            #print(allProj[project]["updated_at"])
-
-            #Converts the created_at and updated_at date strings into datetime objects we can manipulate
-            date1 = datetime.strptime(dictionary[project]["created_at"], '%Y-%m-%d %H:%M:%S')
-            date2 = datetime.strptime(dictionary[project]["updated_at"], '%Y-%m-%d %H:%M:%S')
-
-            #Find the time difference between the two dates
-            totalTime = date2 - date1
-
-            #totalTime is a timedelta object that outputs number of days and then remaining number of hours, minutes and seconds in HH:MM:SS Format
-            #Number of days is accessed through timedeltaobject.days
-            #The remaining total of the  hours, minutes and seconds is accessed through timedeltaobject.seconds, all converted into seconds
-            #timedeltaobject.seconds DOES NOT INCLUDE THE NUMBER OF DAYS
-            #We want the total time to be outputted in number of days and hours
-            #The following will make the output look better for the user
-
-            #60 seconds in a minute, 60 minutes in an hour, rounding down to the nearest hour
-            numberOfHours = int(totalTime.seconds / (60 * 60))
-
-            #print(totalTime.days, " days and ", numberOfHours, " hours")
-
-            #A tad more work just to avoid doing "day(s)" and "hour(s)"
-            if totalTime.days == 1:
-                if numberOfHours == 1:
-                    durationString = str(totalTime.days) + " day and " + str(numberOfHours) + " hour"
-
-                else:
-                    durationString = str(totalTime.days) + " day and " + str(numberOfHours) + " hours"
-            else:
-                if numberOfHours == 1:
-                    durationString = str(totalTime.days) + " days and " + str(numberOfHours) + " hour"
-
-                else:
-                    durationString = str(totalTime.days) + " days and " + str(numberOfHours) + " hours"
+            print("Featured project exists")
+            featuredList.append(dictionary[project])
 
 
-            #print(totalTime)
+    #Checks if list is empty. If it is empty, that means that no featured projects were found
+    if not featuredList:
+        print("No featured project found. Please assign the [featured] tag to a project and run the program again")
 
-            #returns project duration as string
-            return durationString
+    return featuredList
+
+#Return list containing list of statuses for each featured projects that are not yet completed
+def getFeaturedProjectToList(featuredList):
+    featuredProjectsToDoList = []
+    for x in range(len(featuredList)):
+        specificFeaturedProjectToDoList = []
+        for y in range(len(featuredList[x]['statuses'])):
+            if featuredList[x]['statuses'][y]['completed_at'] == None:
+                specificFeaturedProjectToDoList.append(featuredList[x]['statuses'][y])
+        featuredProjectsToDoList.append(specificFeaturedProjectToDoList)
+    return featuredProjectsToDoList

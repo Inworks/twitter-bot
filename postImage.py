@@ -28,7 +28,7 @@ def main():
     elif prompt == 'n':
         print("User declined")
     else:
-        print("Invalid response. Will no proceed to tweet")
+        print("Invalid response. Will not proceed to tweet")
 
 if __name__ == "__main__":
 

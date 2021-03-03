@@ -38,16 +38,22 @@ def check_mentions(api, keywords, since_id):
 #def statusChange(string):
 
 def main():
-
     # Here are the variables needed for functions.py
     # We can condense this into its own function later
-    statusString = "filler text"
-    tempString = "temp"
-    prog = 0 # stores progress of featured project
-    tempp = 0 # This holds a copy of the progress to compare later
-    title = "blahh"
-    prevStatus=[] # stores previous status tweets
     #statusString = titleTags(testdict,tags)
+
+    testdict = {}
+    projectImport(testdict)
+
+    #This is how we will check for changes
+    #We store an instance when the bot starts and continually compare it to an updated and current one
+    initialFeaturedProjects = []
+    initialFeaturedProjects = featuredProjectList(testdict)
+    #print(initialFeaturedProjects)
+    featuredProjectsToDoList = []
+    featuredProjectsToDoList = getFeaturedProjectToList(initialFeaturedProjects)
+    #print(featuredProjectsToDoList)
+
 
     api = create_api()
     #api.update_status("superBot Test is up and running :D")
@@ -57,48 +63,56 @@ def main():
         logger.info("Waiting...")
         time.sleep(20) #This is our delay in seconds
         logger.info("running functions.py\n")
-        # Here are the variables needed for functions.py
         # We can condense this into its own function later
-        testdict = {}
-        #projectImport(testdict)
-        statusString = featuredProject(testdict) #This var holds the description string
-        title = projectTitle(testdict) #This var holds matching project title as a string
-        prog = projectProg(testdict) #This var holds the progress percentage as an int
 
-        #test
-        #print(statusString)
-        #print("Progress: "+str(prog))
+        #This is the updated and current list. We will need to constantly update the list in order to find changes
+        projectImport(testdict)
+        updatedFeaturedProjects = []
+        updatedFeaturedProjects = featuredProjectList(testdict)
 
-        # We should condense this into a function possibly
-        # Adding array of previous status in order to not retweet
-        if(prog!=tempp):#This checks for a change in the featured project progress bar
-            logger.info("Change in progress!!!\n")
-            #tempp = prog
-            t = "Project "+title+" progress increased to "+str(prog)+"!"
-            #for x in prevStatus:
-            if(t not in prevStatus):
-                #api.update_status(t)
-                tempp = prog
-                #statusString=featuredProject(testdict)
-                tempString = statusString
-                prevStatus.append(t)
-            else:
-                tempp = prog
-                logger.info("Duplicate status!!!\n")
-        elif(statusString!=tempString):#This checks for a change in description of the featured project
-            logger.info("Change in description!!!\n")
-            #tempString = statusString
-            #for x in prevStatus:
-            if(statusString not in prevStatus):
-                #api.update_status(statusString)
-                tempString = statusString
-                prevStatus.append(statusString)
-            else:
-                logger.info("Duplicate status!!!\n")
-        # This can also be condensed into a function above
-        else:
-            logger.info("No change\n")
+        #print(featuredProjectsToDoList)
+        #Iterate through the to-do list to see if any have been updated
+        #First loop will iterate through list of featured projects
+        for x in range(len(featuredProjectsToDoList)):
+            #print("first loop")
+            #Second loop will iterate through specific project's statuses that have not been completed
+            for y in range(len(featuredProjectsToDoList[x])):
+                #print("second loop")
+                #Find index of to-do status so we can reference it in the updated list
+                testIndex = 0
+                for a in range(len(updatedFeaturedProjects[x]['statuses'])):
+                    if(updatedFeaturedProjects[x]['statuses'][a]['status'] == featuredProjectsToDoList[x][y]['status']):
+                        testIndex = a
+                        #print(testIndex)
+                #print(testIndex)
+                #print(updatedFeaturedProjects[x]['statuses'][testIndex]['completed_at'])
+                #Check if item is complete
+                if updatedFeaturedProjects[x]['statuses'][testIndex]['completed_at'] != None:
+                    logger.info("Change in progress!!!\n")
+                    #Tweet
+                    #The .replace removes the [featured] tag from the tweet
+                    tweetTitle = updatedFeaturedProjects[x]['title'].replace('[featured]','')
+                    tweetStatus = updatedFeaturedProjects[x]['statuses'][testIndex]['status']
+                    tweetProgress = str(updatedFeaturedProjects[x]['progress'])
+                    tweetDuration = str(projectDuration(updatedFeaturedProjects[x]))
+                    tweet = ("Update on " + tweetTitle + ": The team just completed \"" + tweetStatus +
+                                "\" and is " + tweetProgress + "% complete! \U0001F389 So far this project has taken "
+                                 + tweetDuration + " days.")
+                    #print(tweet)
 
+                    prompt = input("The following will be tweeted: " + tweet + " Would you like to proceed? (y/n)")
+                    if prompt == 'y':
+                        post_result = api.update_status(status=tweet)
+                        print("Status has been tweeted!")
+                    elif prompt == 'n':
+                        print("User declined")
+                    else:
+                        print("Invalid response. Will not proceed to tweet")
+                    #api.update_status(tweet)
+                    #Remove item from to-do list
+                    del featuredProjectsToDoList[x][y]
+                    #print(featuredProjectsToDoList)
+                    break #To prevent an out of bounds error since list will be smaller after removal
 
 if __name__ == "__main__":
     main()
