@@ -51,9 +51,11 @@ def main():
     initialFeaturedProjects = featuredProjectList(testdict)
     #print(initialFeaturedProjects)
     featuredProjectsToDoList = []
-    featuredProjectsToDoList = getFeaturedProjectToList(initialFeaturedProjects)
+    featuredProjectsToDoList = getFeaturedProjectToDoList(initialFeaturedProjects)
     #print(featuredProjectsToDoList)
 
+
+    #print(testdict[17]['files'])
 
     api = create_api()
     #api.update_status("superBot Test is up and running :D")
@@ -61,14 +63,23 @@ def main():
     while True:
         #since_id = check_mentions(api, ["what","up","joe","hello","hey","hi","yo","help", "support"], since_id) #disabled for now
         logger.info("Waiting...")
-        time.sleep(20) #This is our delay in seconds
+        time.sleep(30) #This is our delay in seconds
         logger.info("running functions.py\n")
         # We can condense this into its own function later
 
         #This is the updated and current list. We will need to constantly update the list in order to find changes
         projectImport(testdict)
+
+        # This needs testing
+        #checkNewFeaturedProject(testdict, initialFeaturedProjects, featuredProjectsToDoList)
+
         updatedFeaturedProjects = []
         updatedFeaturedProjects = featuredProjectList(testdict)
+
+        #Find new files with [laser] and [3d] tags and tweets them
+        tweetLaser(testdict, api)
+        tweet3d(testdict, api)
+
 
         #print(featuredProjectsToDoList)
         #Iterate through the to-do list to see if any have been updated
@@ -94,16 +105,16 @@ def main():
                     tweetTitle = updatedFeaturedProjects[x]['title'].replace('[featured]','')
                     tweetStatus = updatedFeaturedProjects[x]['statuses'][testIndex]['status']
                     tweetProgress = str(updatedFeaturedProjects[x]['progress'])
-                    tweetDuration = str(projectDuration(updatedFeaturedProjects[x]))
+                    tweetDuration = projectDuration(updatedFeaturedProjects[x])
                     tweet = ("Update on " + tweetTitle + ": The team just completed \"" + tweetStatus +
                                 "\" and is " + tweetProgress + "% complete! \U0001F389 So far this project has taken "
-                                 + tweetDuration + " days.")
+                                 + tweetDuration)
                     #print(tweet)
 
                     prompt = input("The following will be tweeted: " + tweet + " Would you like to proceed? (y/n)")
                     if prompt == 'y':
                         post_result = api.update_status(status=tweet)
-                        print("Status has been tweeted!")
+                        logger.info("Status has been tweeted!")
                     elif prompt == 'n':
                         print("User declined")
                     else:

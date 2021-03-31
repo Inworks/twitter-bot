@@ -148,24 +148,6 @@ def featuredProject(dictionary):
     #Will only execute if no match is found
     print("No featured project found. Please assign the \"featured\" tag to a project and run the program again")
 
-# Returns an integer of the featured project current progress 0-100
-def projectProg(dictionary):
-    # added project import to populate the dict properly
-    #projectImport(dictionary)
-    for project in dictionary:
-        title = dictionary[project]['title']
-        match = title.find('[featured]')
-        prog = dictionary[project]['progress']
-
-        # Match found
-        if match != -1:
-            #print("Featured project exists")
-            title = title[0:-10]
-            description = dictionary[project]['description']
-
-
-            # returns the progress percentage as an integer
-            return prog
 
 # This function returns the 'Title' of the matching project as a string
 def projectTitle(dictionary):
@@ -212,8 +194,9 @@ def downloadFile(dictionary):
                 for chunk in r.iter_content(chunk_size=8192):
                     f.write(chunk)
 
-#Returns duration of project in number of business days (from create date to update date)
+#Returns string of duration of project in number of business days (from create date to update date) or hours if less than 24 hours
 def projectDuration(project):
+    durationString = ""
     #Converts the created_at and updated_at date strings into datetime objects we can manipulate
     date1 = datetime.strptime(project["created_at"], '%Y-%m-%d %H:%M:%S')
     date2 = datetime.strptime(project["updated_at"], '%Y-%m-%d %H:%M:%S')
@@ -224,24 +207,38 @@ def projectDuration(project):
 
     busDays = np.busday_count(date1Test, date2Test)
 
-    #print(busDays)
+    #If there are updates within the same day, number of business days would be 0 since it took place in less than 24 hours
+    #We would then want to find the number of hours
+    if(busDays == 0):
+        totalTime = date2 - date1
+        #totalTime is a timedelta object that outputs number of days and then remaining number of hours, minutes and seconds in HH:MM:SS Format
+        #Number of days is accessed through timedeltaobject.days
+        #The remaining total of the  hours, minutes and seconds is accessed through timedeltaobject.seconds, all converted into seconds
+        #timedeltaobject.seconds DOES NOT INCLUDE THE NUMBER OF DAYS
+        #We want the total time to be outputted in number of days and hours
+        #The following will make the output look better for the user
 
-    #Returns busDays as an int object
-    return busDays
+        #60 seconds in a minute, 60 minutes in an hour, rounding down to the nearest hour
+        numberOfHours = int(totalTime.seconds / (60 * 60))
+        #print(totalTime.days, " days and ", numberOfHours, " hours")
 
-#Returns the list of statuses for the featured project
-def projectStatus(dictionary):
-    #projectImport(dictionary)
-    for project in dictionary:
-        #print(dictionary[project]['statuses'])
-        title = dictionary[project]['title']
-        match = title.find('[featured]')
+        #A tad more work just to avoid doing "hour(s)"
+        if numberOfHours == 0:
+            durationString = "less than an hour!"
 
-        #Match found
-        if match != -1:
-            #print(project)
-            #print(dictionary[project]['statuses'])
-            return dictionary[project]['statuses']
+        elif numberOfHours == 1:
+            durationString = str(numberOfHours) + " hour"
+
+        else:
+            durationString = str(numberOfHours) + " hours"
+    else:
+        if busDays == 1:
+            durationString = str(busDays) + " day"
+        else:
+            durationString = str(busDays) + " days"
+
+    #Return durationString string object
+    return durationString
 
 #Return a list of all projects with the featured tag
 def featuredProjectList(dictionary):
@@ -264,13 +261,136 @@ def featuredProjectList(dictionary):
 
     return featuredList
 
+#Checks if there is a new project with the featured tag and if so, adds it to the featured list and to do list
+def checkNewFeaturedProject(dictionary, featuredList, toDoList):
+    # added project import to populate the dict properly
+    #projectImport(dictionary)
+    for project in dictionary:
+        title = dictionary[project]['title']
+        match = title.find('[featured]')
+
+        # Project with featured tag found
+        if match != -1:
+            #Check if project exists. If no match, that means there is a new featured project to be added
+            newProj = True
+            for featuredProj in featuredList:
+                if featuredList[featuredProj]['title'] == dictionary[project]['title']:
+                    newProj = False
+
+            if newProj:
+                print("New featured project exists")
+                #Add to list of featured projects
+                featuredList.append(dictionary[project])
+                #Add to to-do list of featured projects
+                projectToDoList = []
+                for y in range(len(dictionary[project]['statuses'])):
+                    if dictionary[project]['statuses'][y]['completed_at'] == None:
+                        projectToDoList.append(dictionary[project]['statuses'][y])
+                toDoList.append(projectToDoList)
+
 #Return list containing list of statuses for each featured projects that are not yet completed
-def getFeaturedProjectToList(featuredList):
+def getFeaturedProjectToDoList(featuredList):
     featuredProjectsToDoList = []
+    #Traverse list of featured projects
     for x in range(len(featuredList)):
         specificFeaturedProjectToDoList = []
+        #Traverse each project's list of statuses and checks which ones are not done
         for y in range(len(featuredList[x]['statuses'])):
             if featuredList[x]['statuses'][y]['completed_at'] == None:
                 specificFeaturedProjectToDoList.append(featuredList[x]['statuses'][y])
         featuredProjectsToDoList.append(specificFeaturedProjectToDoList)
     return featuredProjectsToDoList
+
+#Searches for new files with the [laser] tag and tweets it
+def tweetLaser(testdict, api):
+    for project in testdict:
+        # print(testdict[project]['title'])
+        # print(project)
+        # print(testdict[project]['files'])
+        for thing in testdict[project]['files']:
+            #print(thing)
+            #print(os.getcwd())
+            fileName = thing['name']
+            findLaser = fileName.find('[laser]')
+            if findLaser != -1:
+                ourCwd = "{}/{}".format(os.getcwd(), "Laser")
+
+                #Searches for folder called Laser, makes if doesn't exist
+                if not os.path.exists(ourCwd):
+                    os.mkdir(ourCwd)
+
+                laserPath = ourCwd + "/" + fileName
+                #checks if file already exists
+                #if file doesn't exist, then add it and tweet it
+                if not os.path.exists(laserPath):
+                    url = thing['download_url']
+
+                    #Creates file
+                    file_write = os.path.join(ourCwd,fileName)
+
+                    #Writes to file
+                    with requests.get(url, stream=True) as r:
+                        r.raise_for_status()
+                        with open(file_write, 'wb') as f:
+                            for chunk in r.iter_content(chunk_size=8192):
+                                f.write(chunk)
+                    # Upload image
+                    media = api.media_upload("./Laser/" + fileName) #Add image path here
+
+                    # Post tweet with image, duration, title and progress
+                    tweetTitle = testdict[project]['title'].replace('[laser]','')
+                    tweet = ("Look what we've laser cut for " + tweetTitle)
+                    prompt = input("The following will be tweeted: " + tweet + " Would you like to proceed? (y/n)")
+                    if prompt == 'y':
+                        post_result = api.update_status(status=tweet, media_ids=[media.media_id])
+                    elif prompt == 'n':
+                        print("User declined")
+                    else:
+                        print("Invalid response. Will not proceed to tweet")
+
+#Searches for new files with the [3d] tag and tweets it
+def tweet3d(testdict, api):
+    for project in testdict:
+        # print(testdict[project]['title'])
+        # print(project)
+        # print(testdict[project]['files'])
+        for thing in testdict[project]['files']:
+            #print(thing)
+            #print(os.getcwd())
+            fileName = thing['name']
+            find3d = fileName.find('[3d]')
+            if find3d != -1:
+                ourCwd = "{}/{}".format(os.getcwd(), "3D")
+
+                #Searches for folder called Laser, makes if doesn't exist
+                if not os.path.exists(ourCwd):
+                    os.mkdir(ourCwd)
+
+                path3d = ourCwd + "/" + fileName
+                #checks if file already exists
+                #if file doesn't exist, then add it and tweet it
+                if not os.path.exists(path3d):
+                    url = thing['download_url']
+
+                    #Creates file
+                    file_write = os.path.join(ourCwd,fileName)
+
+                    #Writes to file
+                    with requests.get(url, stream=True) as r:
+                        r.raise_for_status()
+                        with open(file_write, 'wb') as f:
+                            for chunk in r.iter_content(chunk_size=8192):
+                                f.write(chunk)
+                    # Upload image
+                    media = api.media_upload("./3D/" + fileName) #Add image path here
+
+                    # Post tweet with image, duration, title and progress
+                    tweetTitle = testdict[project]['title'].replace('[3d]','')
+                    tweet = ("Look what we've 3D printed for " + tweetTitle)
+                    prompt = input("The following will be tweeted: " + tweet + " Would you like to proceed? (y/n)")
+                    if prompt == 'y':
+                        post_result = api.update_status(status=tweet, media_ids=[media.media_id])
+                    elif prompt == 'n':
+                        print("User declined")
+                    else:
+                        print("Invalid response. Will not proceed to tweet")
